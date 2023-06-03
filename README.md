@@ -10,33 +10,6 @@ This is a starter kit for Django 4.2 projects. It includes:
 ## Getting Started
 
 1. Clone the repository
-2. Install Poetry
-3. Create a virtual environment and activate it
-4. Install the requirements
-5. Run the development server
-
-
-Sure, here is a better README.md for a Django 4.2 starter kit:
-Code snippet
-
-# Django 4.2 Starter Kit
-
-This is a starter kit for Django 4.2 projects. It includes:
-
-* Postgres database setup
-* Poetry Python environment & requirement management
-* Pre-configured Celery with RabbitMQ Broker + Redis Broker with sane defaults
-* Dockerfile + compose file for easy development
-
-## Getting Started
-
-1. Clone the repository
-2. Install Poetry
-3. Create a virtual environment and activate it
-4. Install the requirements
-5. Run the development server
-
-1. Clone the repository
 ```
 git clone https://github.com/gwagstaff/django-starter
 ```
@@ -58,8 +31,26 @@ python manage.py runserver
 ```
 
 The development server will now be running on port 8000. You can access it at http://localhost:8000.
-Features
----
+
+### Using Docker Compose
+
+To run the project using Docker Compose, follow these steps:
+
+1. Clone the repository
+```
+git clone https://github.com/gwagstaff/django-starter
+```
+2. Change directory into the root of the project
+```
+cd django-starter
+```
+3. Run the following command:
+```
+docker compose up -d
+```
+
+### Features
+
 This starter kit includes the following features:
 
      - Postgres database setup

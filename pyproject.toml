@@ -42,15 +42,3 @@ multi_line_output = 3
 
 DJANGO_SETTINGS_MODULE = "core.settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
-
-
-
-
-
-
-
-
-
-
-
-

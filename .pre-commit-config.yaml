@@ -8,7 +8,7 @@ repos:
       - id: end-of-file-fixer
       - id: file-contents-sorter
         args: ["--ignore-case", "--unique"]
-        files: ^(\.gitignore|\.dockerignore|poetry\.lock|pyproject\.toml)$
+        files: ^(\.dockerignore)$
       - id: mixed-line-ending
         args: ["--fix=lf"]
       - id: pretty-format-json
@@ -41,6 +41,8 @@ repos:
     rev: 6.0.0
     hooks:
       - id: flake8
+        entry: pflake8
+        additional_dependencies: [pyproject-flake8]
 
   - repo: https://github.com/rtts/djhtml
     rev: v1.5.2

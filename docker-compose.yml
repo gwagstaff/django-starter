@@ -1,0 +1,48 @@
+version: '3.9'
+
+volumes:
+  postgres_data:
+
+x-common:
+  &common
+    build: .
+    env_file:
+      - development.env
+    volumes:
+      - ./core:/app/core
+      - ./tests:/app/tests
+    depends_on:
+      - db
+      - redis
+      - rabbit
+
+services:
+  db:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+    - 6379:6379
+
+  rabbit:
+    image: rabbitmq:management
+    ports:
+    - 5672:5672
+    - 15672:15672
+
+  web:
+    <<: *common
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+
+  worker:
+    <<: *common
+    command: celery -A core worker

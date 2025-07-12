@@ -1,44 +1,23 @@
-[tool.poetry]
-authors = ["naphal <naphal@naphal.net>"]
+[project]
 name = "django-starter"
-version = "0.1.0"
-description = ""
+version = "1.1.0"
+description = "Django Starter Kit"
+authors = ["naphal <naphal@naphal.net>"]
 readme = "README.md"
-packages = [{include = "django_starter"}]
+requires-python = ">=3.11"
+dependencies = [
+    "celery[redis]>=5.5.3",
+    "django>=5.2.4",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "whitenoise>=6.9.0",
+]
 
-
-[tool.poetry.dependencies]
-celery = {extras = ["rabbitmq", "redis"], version = "^5.2.7"}
-django = "^4.2.1"
-psycopg = {extras = ["binary"], version = "^3.1.9"}
-pydantic = {extras = ["dotenv"], version = "^1.10.8"}
-python = "^3.11"
-whitenoise = "^6.4.0"
-
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^3.3.2"
-pytest-celery = "^0.0.0"
-pytest-django = "^4.5.2"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.black]
-line-length = 88
-max-line-length = 119
-
-
-[tool.flake8]
-exclude = [".venv/*","venv/*"]
-ignore = ["E123","E128","E203","E266","E402","F405","E501","W503","E731","W601"]
-
-[tool.isort]
-skip = ["pyproject.toml", "poetry.lock", "Dockerfile", "docker-compose.yml"]
-profile = "black"
-multi_line_output = 3
-
-[tool.pytest.ini_options]
-
-DJANGO_SETTINGS_MODULE = "core.settings"
-python_files = ["tests.py", "test_*.py", "*_tests.py"]
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "pytest-celery>=1.2.0",
+    "pytest-django>=4.11.1",
+    "ruff>=0.12.3",
+]

@@ -16,7 +16,8 @@ import sys
 from functools import cache
 from pathlib import Path
 
-from pydantic import AmqpDsn, BaseSettings, Field, RedisDsn
+from pydantic_settings import BaseSettings
+from pydantic import Field
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,8 +57,8 @@ class Settings(BaseSettings):
     PGPASSWORD: str | None = None
 
     #: Celery Settings
-    BROKER_URL: AmqpDsn = "amqp://localhost:5672//"
-    BACKEND_URL: RedisDsn = "redis://localhost:6379/0"
+    BROKER_URL: str | None = "amqp://localhost:5672//"
+    BACKEND_URL: str | None = "redis://localhost:6379/0"
 
     class Config:
         env_prefix = "APP_"
@@ -66,15 +67,6 @@ class Settings(BaseSettings):
         # Case sensitivity doesn't work on Windows, so might as well be
         # consistent from the get-go.
         case_sensitive = False
-
-        # Override the env_prefix so these fields load without TAKAHE_
-        fields = {
-            "PGHOST": {"env": "PGHOST"},
-            "PGPORT": {"env": "PGPORT"},
-            "PGNAME": {"env": "PGNAME"},
-            "PGUSER": {"env": "PGUSER"},
-            "PGPASSWORD": {"env": "PGPASSWORD"},
-        }
 
 
 @cache
@@ -104,8 +96,9 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -124,7 +117,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

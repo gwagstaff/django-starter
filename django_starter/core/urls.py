@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import CeleryDemoView, StartTaskView, TaskStatusView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('', CeleryDemoView.as_view(), name='celery_demo'),
+    path('celery-demo/start/', StartTaskView.as_view(), name='start_task'),
+    path('celery-demo/status/<str:task_id>/', TaskStatusView.as_view(), name='task_status'),
 ]

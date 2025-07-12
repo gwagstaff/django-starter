@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Celery Task Demo (htmx)</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body>
+    <h1>Celery Task Demo</h1>
+    <form id="task-form" hx-post="/celery-demo/start/" hx-trigger="submit" hx-target="#status" hx-swap="innerHTML" hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
+        <label>Enter a number:
+            <input type="number" name="number" min="1" required>
+        </label>
+        <button type="submit">Start Task</button>
+    </form>
+    <div id="status"></div>
+
+    <template id="poll-template">
+        <div>
+            <p>Task started. Checking status...</p>
+            <div id="poll-status"></div>
+        </div>
+    </template>
+
+    <script>
+    document.body.addEventListener('htmx:afterOnLoad', function(evt) {
+        var detail = evt.detail;
+        if (detail && detail.xhr && detail.xhr.response) {
+            try {
+                var data = JSON.parse(detail.xhr.response);
+                if (data.task_id) {
+                    // Show polling UI
+                    document.querySelector('#status').innerHTML = document.querySelector('#poll-template').innerHTML;
+                    // Start polling
+                    pollStatus(data.task_id);
+                }
+            } catch (e) {}
+        }
+    });
+
+    function pollStatus(taskId) {
+        fetch(`/celery-demo/status/${taskId}/`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.state === 'PROGRESS') {
+                    document.querySelector('#poll-status').innerHTML = `Progress: ${data.percent}%`;
+                    setTimeout(() => pollStatus(taskId), 1000);
+                } else if (data.state === 'SUCCESS') {
+                    document.querySelector('#poll-status').innerHTML = `Result: ${data.result}`;
+                } else {
+                    document.querySelector('#poll-status').innerHTML = `State: ${data.state}`;
+                    setTimeout(() => pollStatus(taskId), 1000);
+                }
+            });
+    }
+    </script>
+</body>
+</html> 

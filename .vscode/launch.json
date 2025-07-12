@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Celery Worker",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "celery",
+            "args": [
+                "--app=core",
+                "worker",
+                "--loglevel=info",
+                "--pool=solo"
+            ],
+            "envFile": "${workspaceFolder}/development.env",
+            "cwd": "${workspaceFolder}/django_starter"
+        },
+        {
+            "name": "Django Server",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "runserver"
+            ],
+            "envFile": "${workspaceFolder}/development.env",
+            "django": true,
+            "autoStartBrowser": false,
+            "program": "${workspaceFolder}\\django_starter\\manage.py",
+            "cwd": "${workspaceFolder}/django_starter"
+        }
+    ]
+}

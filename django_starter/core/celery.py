@@ -26,7 +26,8 @@ def debug_task_returning(self, a: int) -> None:
     """Useful to see if the results backend is working."""
     for i in range(a):
         sleep(1)
-        logger.info(f"Task at {i} loops")
-        self.update_state(state="PROGRESS", meta={"process_percent": i * 10})
+        progress = round(((i + 1) / a) * 100, 2)
+        logger.info(f"Task at {i} loops,Progress: {progress}%")
+        self.update_state(state="PROGRESS", meta={"process_percent": progress})
     logger.info(f"Task completed after {i} loops")
     return f"Task completed after {a} loops"
